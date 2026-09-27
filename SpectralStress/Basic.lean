@@ -55,9 +55,11 @@ theorem sum_rule {m : ℕ} (a k : Fin m → Fin m → ℝ) (lam : Fin m → ℝ)
   simp only [h]
   have hs : ∑ b, ∑ c, pairTerm a k lam b c = ∑ b, ∑ c, pairTerm a k lam c b :=
     Finset.sum_comm
-  simp only [pairTerm_antisymm a k lam] at hs
-  rw [Finset.sum_neg_distrib] at hs
-  simp only [Finset.sum_neg_distrib] at hs
+  have hn : ∑ b, ∑ c, pairTerm a k lam c b = -∑ b, ∑ c, pairTerm a k lam b c := by
+    rw [← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl fun b _ => ?_
+    rw [← Finset.sum_neg_distrib]
+    exact Finset.sum_congr rfl fun c _ => pairTerm_antisymm a k lam b c
   linarith
 
 /-! ## Gauge invariance -/
@@ -88,7 +90,7 @@ theorem factorisation (kbc kcb lb lc ρb ρc : ℝ) (h : lb ≠ lc) :
 /-- **Corollary 1 (vanishing).** If `ρ` is the same on every band the pair term vanishes. -/
 theorem vanishing (kbc kcb lb lc ρ : ℝ) :
     ((ρ * kbc) * kcb - kbc * (ρ * kcb)) / (lb - lc) ^ 2 = 0 := by
-  ring_nf; simp
+  ring
 
 /-! ## The amplitude `A = −5√2/16` -/
 
