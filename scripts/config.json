@@ -1,0 +1,1 @@
+{"modules":[{"module":"SpectralStress.Basic","path":"SpectralStress/Basic.lean"}],"expected_theorems":20,"expected_false_controls":3,"root_imports":["SpectralStress.Basic"]}
